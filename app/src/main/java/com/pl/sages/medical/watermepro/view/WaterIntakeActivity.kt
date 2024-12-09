@@ -24,7 +24,7 @@ class WaterIntakeActivity : AppCompatActivity() {
         Log.d("MainActivity", "onCreate")
 
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_water_intake)
 
         ourButton = findViewById(R.id.our_button)
         ourTextView = findViewById(R.id.our_textview)
