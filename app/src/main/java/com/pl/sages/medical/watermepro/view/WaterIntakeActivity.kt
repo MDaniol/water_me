@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +16,9 @@ class WaterIntakeActivity : AppCompatActivity() {
     private val TAG = WaterIntakeActivity::class.qualifiedName
 
     private lateinit var ourButton: Button
+    private lateinit var waterIntakeCountTextView: TextView
+
+    private var waterIntakeCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +29,7 @@ class WaterIntakeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_water_intake)
 
         ourButton = findViewById(R.id.our_button)
-
+        waterIntakeCountTextView = findViewById(R.id.water_intake_count_tv)
         initView()
     }
 
@@ -41,10 +45,22 @@ class WaterIntakeActivity : AppCompatActivity() {
         ourButton.setOnClickListener {
             buttonTapHandler()
         }
+
+        updateUI()
     }
 
     private fun buttonTapHandler() {
-        // JAKAŚ ZMIANA
+        waterIntakeCount++
+        Log.d(TAG, "Water intake count: $waterIntakeCount")
+        updateUI()
+    }
+
+    private fun updateUI() {
+        waterIntakeCountTextView.text = "$waterIntakeCount"
+    }
+
+    private fun presentToast() {
+
     }
 
     override fun onStart() {
