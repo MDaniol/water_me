@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun buttonTapHandler() {
         ourTextView2.text = getString(R.string.i_am_app)
+        // JAKAŚ ZMIANA
     }
 
     private fun sayHello() {
