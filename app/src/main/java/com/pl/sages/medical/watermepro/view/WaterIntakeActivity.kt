@@ -57,10 +57,15 @@ class WaterIntakeActivity : AppCompatActivity() {
 
     private fun updateUI() {
         waterIntakeCountTextView.text = "$waterIntakeCount"
+        if(waterIntakeCount == 5) {
+            presentToast("Wspaniała robota!")
+        } else if(waterIntakeCount == 10) {
+            presentToast("Keep going!")
+        }
     }
 
-    private fun presentToast() {
-
+    private fun presentToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onStart() {
