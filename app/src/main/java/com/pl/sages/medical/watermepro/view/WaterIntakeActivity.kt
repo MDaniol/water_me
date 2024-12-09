@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,7 +19,7 @@ class WaterIntakeActivity : AppCompatActivity() {
     private lateinit var ourButton: Button
     private lateinit var waterIntakeCountTextView: TextView
 
-    private var waterIntakeCount: Int = 0
+    val viewModel: WaterIntakeScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,16 +51,16 @@ class WaterIntakeActivity : AppCompatActivity() {
     }
 
     private fun buttonTapHandler() {
-        waterIntakeCount++
-        Log.d(TAG, "Water intake count: $waterIntakeCount")
+        viewModel.incrementWaterIntake()
+        Log.d(TAG, "Water intake count: ${viewModel.waterIntakeCount}")
         updateUI()
     }
 
     private fun updateUI() {
-        waterIntakeCountTextView.text = "$waterIntakeCount"
-        if(waterIntakeCount == 5) {
+        waterIntakeCountTextView.text = "${viewModel.waterIntakeCount}"
+        if(viewModel.waterIntakeCount == 5) {
             presentToast("Wspaniała robota!")
-        } else if(waterIntakeCount == 10) {
+        } else if(viewModel.waterIntakeCount == 10) {
             presentToast("Keep going!")
         }
     }
