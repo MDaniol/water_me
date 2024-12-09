@@ -14,9 +14,7 @@ class WaterIntakeActivity : AppCompatActivity() {
 
     private val TAG = WaterIntakeActivity::class.qualifiedName
 
-    private lateinit var ourTextView: TextView
     private lateinit var ourButton: Button
-    private lateinit var ourTextView2: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +25,6 @@ class WaterIntakeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_water_intake)
 
         ourButton = findViewById(R.id.our_button)
-        ourTextView = findViewById(R.id.our_textview)
-        ourTextView2 = findViewById(R.id.our_textview_2)
 
         initView()
     }
@@ -40,8 +36,6 @@ class WaterIntakeActivity : AppCompatActivity() {
             insets
         }
 
-        ourTextView.text = getString(R.string.hello_polish)
-        ourTextView2.text = getString(R.string.empty_placeholder)
         ourButton.text = getString(R.string.button_text)
 
         ourButton.setOnClickListener {
@@ -50,13 +44,7 @@ class WaterIntakeActivity : AppCompatActivity() {
     }
 
     private fun buttonTapHandler() {
-        ourTextView2.text = getString(R.string.i_am_app)
         // JAKAŚ ZMIANA
-    }
-
-    private fun sayHello() {
-        ourTextView.text = "Cześć, Jestem Apką!"
-        ourTextView2.text = "Inne textview"
     }
 
     override fun onStart() {
