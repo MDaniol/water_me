@@ -14,14 +14,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.pl.sages.medical.watermepro.R
+import com.pl.sages.medical.watermepro.databinding.ActivityWaterIntakeBinding
 
 class WaterIntakeActivity : AppCompatActivity() {
 
     private val TAG = WaterIntakeActivity::class.qualifiedName
 
-    private lateinit var ourButton: Button
-    private lateinit var waterIntakeCountTextView: TextView
-    private lateinit var targetWaterIntakeTextView: TextView
+    private lateinit var binding: ActivityWaterIntakeBinding
 
     val viewModel: WaterIntakeScreenViewModel by viewModels()
 
@@ -38,11 +37,10 @@ class WaterIntakeActivity : AppCompatActivity() {
         Log.d("MainActivity", "onCreate")
 
         enableEdgeToEdge()
-        setContentView(R.layout.activity_water_intake)
 
-        ourButton = findViewById(R.id.our_button)
-        waterIntakeCountTextView = findViewById(R.id.water_intake_count_tv)
-        targetWaterIntakeTextView = findViewById(R.id.target_water_intake_tv)
+        binding = ActivityWaterIntakeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         initView()
     }
 
@@ -53,9 +51,9 @@ class WaterIntakeActivity : AppCompatActivity() {
             insets
         }
 
-        ourButton.text = getString(R.string.button_text)
+        binding.ourButton.text = getString(R.string.button_text)
 
-        ourButton.setOnClickListener {
+        binding.ourButton.setOnClickListener {
             buttonTapHandler()
         }
 
@@ -69,22 +67,22 @@ class WaterIntakeActivity : AppCompatActivity() {
     }
 
     private fun updateUI(isInitialUpdate: Boolean = false) {
-        targetWaterIntakeTextView.text =
+        binding.targetWaterIntakeTv.text =
             getString(R.string.target_water_intake_text, "${viewModel.targetWaterIntake}")
 
         if (isInitialUpdate) {
-            waterIntakeCountTextView.text = "${viewModel.waterIntakeCount}"
+            binding.waterIntakeCountTv.text = "${viewModel.waterIntakeCount}"
         } else {
-            val fadeOut = ObjectAnimator.ofFloat(waterIntakeCountTextView, "alpha", 1f, 0f)
+            val fadeOut = ObjectAnimator.ofFloat(binding.waterIntakeCountTv, "alpha", 1f, 0f)
             fadeOut.duration = FADE_OUT_DURATION
 
-            val fadeIn = ObjectAnimator.ofFloat(waterIntakeCountTextView, "alpha", 0f, 1f)
+            val fadeIn = ObjectAnimator.ofFloat(binding.waterIntakeCountTv, "alpha", 0f, 1f)
             fadeIn.duration = FADE_IN_DURATION
 
             fadeOut.addListener(object: AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
-                    waterIntakeCountTextView.text = "${viewModel.waterIntakeCount}"
+                    binding.waterIntakeCountTv.text = "${viewModel.waterIntakeCount}"
                     fadeIn.start()
                 }
             })
