@@ -3,6 +3,7 @@ package com.pl.sages.medical.watermepro.view
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
@@ -57,7 +58,17 @@ class WaterIntakeActivity : AppCompatActivity() {
             buttonTapHandler()
         }
 
+        binding.weatherIconImageView.setOnClickListener {
+            goToWeatherDetails()
+        }
+
         observeViewModel()
+    }
+
+    private fun goToWeatherDetails() {
+        Log.d(TAG, "Going to WeatherDetailsActivity")
+        val intent = Intent(this, WeatherDetailsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun buttonTapHandler() {
