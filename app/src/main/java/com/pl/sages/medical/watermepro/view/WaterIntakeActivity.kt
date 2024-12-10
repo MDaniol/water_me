@@ -5,8 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -57,21 +55,32 @@ class WaterIntakeActivity : AppCompatActivity() {
             buttonTapHandler()
         }
 
-        updateUI(isInitialUpdate = true)
+        updateUI(waterIntakeCount = 0, targetWaterIntake = viewModel.targetWaterIntake, isInitialUpdate = true)
+        observeViewModel()
     }
 
     private fun buttonTapHandler() {
         viewModel.incrementWaterIntake()
         Log.d(TAG, "Water intake count: ${viewModel.waterIntakeCount}")
-        updateUI()
     }
 
-    private fun updateUI(isInitialUpdate: Boolean = false) {
+    fun observeViewModel() { //
+        // Obserwator zmiennej LiveData - deklarujemy akcje do wykonania w momencie zmiany wartosci zmiennej
+        viewModel.waterIntakeCount.observe(this) {
+            Log.d(TAG, "Water intake count: $it")
+            updateUI(waterIntakeCount = it, targetWaterIntake = viewModel.targetWaterIntake)
+        }
+
+            // .isDataLoading.obeserve(this) { wlacz/wylacz przycisk=... }
+    }
+
+
+    private fun updateUI(waterIntakeCount: Int, targetWaterIntake: Int, isInitialUpdate: Boolean = false) {
         binding.targetWaterIntakeTv.text =
-            getString(R.string.target_water_intake_text, "${viewModel.targetWaterIntake}")
+            getString(R.string.target_water_intake_text, "${targetWaterIntake}")
 
         if (isInitialUpdate) {
-            binding.waterIntakeCountTv.text = "${viewModel.waterIntakeCount}"
+            binding.waterIntakeCountTv.text = "${waterIntakeCount}"
         } else {
             val fadeOut = ObjectAnimator.ofFloat(binding.waterIntakeCountTv, "alpha", 1f, 0f)
             fadeOut.duration = FADE_OUT_DURATION
@@ -82,7 +91,7 @@ class WaterIntakeActivity : AppCompatActivity() {
             fadeOut.addListener(object: AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
-                    binding.waterIntakeCountTv.text = "${viewModel.waterIntakeCount}"
+                    binding.waterIntakeCountTv.text = "${waterIntakeCount}"
                     fadeIn.start()
                 }
             })
@@ -90,9 +99,9 @@ class WaterIntakeActivity : AppCompatActivity() {
             fadeOut.start()
         }
 
-        if(viewModel.waterIntakeCount == FIRST_ACHIEVEMENT_COUNT) {
+        if(waterIntakeCount == FIRST_ACHIEVEMENT_COUNT) {
             presentToast("Wspaniała robota!")
-        } else if(viewModel.waterIntakeCount == SECOND_ACHIEVEMENT_COUNT) {
+        } else if(waterIntakeCount == SECOND_ACHIEVEMENT_COUNT) {
             presentToast("Keep going!")
         }
     }
