@@ -3,6 +3,7 @@ package com.pl.sages.medical.watermepro.view
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -69,6 +70,20 @@ class WaterIntakeActivity : AppCompatActivity() {
         viewModel.waterIntakeCount.observe(this) {
             Log.d(TAG, "Water intake count: $it")
             updateUI(waterIntakeCount = it, targetWaterIntake = viewModel.targetWaterIntake)
+        }
+
+        viewModel.weather.observe(this) { weather ->
+            when(weather) {
+                "Sunny" -> {
+                    Toast.makeText(this, "It's sunny outside!", Toast.LENGTH_LONG).show()
+                    binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_sunny))
+                }
+                "Rainy" -> {
+                    Toast.makeText(this, "It's raining outside!", Toast.LENGTH_LONG).show()
+                    binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_thunder))
+
+                }
+            }
         }
 
             // .isDataLoading.obeserve(this) { wlacz/wylacz przycisk=... }
