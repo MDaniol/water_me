@@ -57,23 +57,75 @@ class WaterIntakeActivity : AppCompatActivity() {
             buttonTapHandler()
         }
 
-        updateUI(waterIntakeCount = 0, targetWaterIntake = viewModel.targetWaterIntake, isInitialUpdate = true)
         observeViewModel()
     }
 
     private fun buttonTapHandler() {
         viewModel.incrementWaterIntake()
-        Log.d(TAG, "Water intake count: ${viewModel.waterIntakeCount}")
+        Log.d(TAG, "Water intake count: ${viewModel.uiState.value?.waterIntakeCount}")
     }
 
-    fun observeViewModel() { //
-        // Obserwator zmiennej LiveData - deklarujemy akcje do wykonania w momencie zmiany wartosci zmiennej
-        viewModel.waterIntakeCount.observe(this) {
-            Log.d(TAG, "Water intake count: $it")
-            updateUI(waterIntakeCount = it, targetWaterIntake = viewModel.targetWaterIntake)
+    // Inicjalizujemy obserwator uiState z ViewModelu (nasłuchujemy zmian)
+    fun observeViewModel() {
+       viewModel.uiState.observe(this) { uiState ->
+           // jesli jakas zmiana wystapi wykona się kod poniżej,
+           // zmieniony obiekt uiState jest przekazany jako zmienna uiState
+           updateUI(uiState) // Update danych na UI z obiektu uiState
+       }
+    }
+
+    // Update interfejsu użytkownika
+    private fun updateUI(uiState: UiState) {
+        binding.targetWaterIntakeTv.text =
+            getString(R.string.target_water_intake_text, "${uiState.targetWaterIntake}")
+
+        val fadeOut = ObjectAnimator.ofFloat(binding.waterIntakeCountTv, "alpha", 1f, 0f)
+        fadeOut.duration = FADE_OUT_DURATION
+
+        val fadeIn = ObjectAnimator.ofFloat(binding.waterIntakeCountTv, "alpha", 0f, 1f)
+        fadeIn.duration = FADE_IN_DURATION
+
+        fadeOut.addListener(object: AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                binding.waterIntakeCountTv.text = "${uiState.waterIntakeCount}"
+                fadeIn.start()
+            }
+        })
+
+        fadeOut.start()
+
+        if(uiState.waterIntakeCount == FIRST_ACHIEVEMENT_COUNT) {
+            presentToast("Wspaniała robota!")
+        } else if(uiState.waterIntakeCount == SECOND_ACHIEVEMENT_COUNT) {
+            presentToast("Keep going!")
         }
 
-        viewModel.weather.observe(this) { weather ->
+        if (uiState.isDataLoading) {
+            // jeśli jest ładowanie danych -> ustawiamy kanał alpha (nieprzezroczystość) na 1 dla loading spinnera
+            binding.loadingSpinner.alpha = 1f
+
+            // jeśli jest ładowanie danych -> ustawiamy kanał alpha (nieprzezroczystość) na 0 dla reszty (będą niewidoczne)
+            binding.targetWaterIntakeTv.alpha = 0f
+            binding.waterIntakeCountTv.alpha = 0f
+            binding.weatherIconImageView.alpha = 0f
+            binding.waterIconImageView.alpha = 0f
+            // Wyłączamy przysk (nie da sie w niego kliknąć)
+            binding.ourButton.isEnabled = false
+
+        } else {
+            // Jeśli już nie ładujemy danych, to loading spinner powinien zniknąć a reszta elementów powinna się pojawić
+            binding.loadingSpinner.alpha = 0f
+
+            binding.targetWaterIntakeTv.alpha = 1f
+            binding.waterIntakeCountTv.alpha = 1f
+            binding.weatherIconImageView.alpha = 1f
+            binding.waterIconImageView.alpha = 1f
+
+            binding.ourButton.isEnabled = true
+        }
+
+       uiState.weather?.let { weather ->
             when(weather.weatherKind) {
                 WeatherKind.SUNNY -> {
                     Toast.makeText(this, "It's sunny outside!", Toast.LENGTH_LONG).show()
@@ -97,100 +149,9 @@ class WaterIntakeActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // Obserwujemy zmienną "isDataLoading" z ViewModelu
-        viewModel.isDataLoading.observe(this) { isLoading ->
-            if (isLoading) {
-                // jeśli jest ładowanie danych -> ustawiamy kanał alpha (nieprzezroczystość) na 1 dla loading spinnera
-                binding.loadingSpinner.alpha = 1f
-
-                // jeśli jest ładowanie danych -> ustawiamy kanał alpha (nieprzezroczystość) na 0 dla reszty (będą niewidoczne)
-                binding.targetWaterIntakeTv.alpha = 0f
-                binding.waterIntakeCountTv.alpha = 0f
-                binding.weatherIconImageView.alpha = 0f
-                binding.waterIconImageView.alpha = 0f
-                // Wyłączamy przysk (nie da sie w niego kliknąć)
-                binding.ourButton.isEnabled = false
-
-            } else {
-                // Jeśli już nie ładujemy danych, to loading spinner powinien zniknąć a reszta elementów powinna się pojawić
-                binding.loadingSpinner.alpha = 0f
-
-                binding.targetWaterIntakeTv.alpha = 1f
-                binding.waterIntakeCountTv.alpha = 1f
-                binding.weatherIconImageView.alpha = 1f
-                binding.waterIconImageView.alpha = 1f
-
-                binding.ourButton.isEnabled = true
-            }
-        }
-
-            // .isDataLoading.obeserve(this) { wlacz/wylacz przycisk=... }
-    }
-
-
-    private fun updateUI(waterIntakeCount: Int, targetWaterIntake: Int, isInitialUpdate: Boolean = false) {
-        binding.targetWaterIntakeTv.text =
-            getString(R.string.target_water_intake_text, "${targetWaterIntake}")
-
-        if (isInitialUpdate) {
-            binding.waterIntakeCountTv.text = "${waterIntakeCount}"
-        } else {
-            val fadeOut = ObjectAnimator.ofFloat(binding.waterIntakeCountTv, "alpha", 1f, 0f)
-            fadeOut.duration = FADE_OUT_DURATION
-
-            val fadeIn = ObjectAnimator.ofFloat(binding.waterIntakeCountTv, "alpha", 0f, 1f)
-            fadeIn.duration = FADE_IN_DURATION
-
-            fadeOut.addListener(object: AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    binding.waterIntakeCountTv.text = "${waterIntakeCount}"
-                    fadeIn.start()
-                }
-            })
-
-            fadeOut.start()
-        }
-
-        if(waterIntakeCount == FIRST_ACHIEVEMENT_COUNT) {
-            presentToast("Wspaniała robota!")
-        } else if(waterIntakeCount == SECOND_ACHIEVEMENT_COUNT) {
-            presentToast("Keep going!")
-        }
     }
 
     private fun presentToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(TAG, "onRestart")
     }
 }
