@@ -14,7 +14,13 @@ class RemoteWeatherProvider() {
     suspend fun getCurrentWeather(): WeatherData {
         return withContext(Dispatchers.IO) {
             delay(3000) // czekamy 3s
-            WeatherData(temperature = 26, WeatherKind.RAINY, "ic_rainy") // zwracamy dane pogodowe
+
+            WeatherData(
+                temperature = 26,
+                pressure = 1013,
+                description = "Rainy weather, without any hope for sun",
+                weatherKind = WeatherKind.RAINY,
+                icon = "ic_rainy") // zwracamy dane pogodowe
         }
     }
 }
