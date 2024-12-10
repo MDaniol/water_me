@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WaterMePro</string>
-    <string name="button_text">Wypij</string>
+    <string name="button_text">Wypij Szklankę</string>
+    <string name="target_water_intake_text">/%1$s</string>
 
 
 </resources>
