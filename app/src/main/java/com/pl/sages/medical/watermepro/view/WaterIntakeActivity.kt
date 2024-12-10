@@ -95,8 +95,33 @@ class WaterIntakeActivity : AppCompatActivity() {
                     Toast.makeText(this, "Unknown weather :( ", Toast.LENGTH_LONG).show()
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_question_mark))
                 }
+            }
+        }
 
+        // Obserwujemy zmienną "isDataLoading" z ViewModelu
+        viewModel.isDataLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                // jeśli jest ładowanie danych -> ustawiamy kanał alpha (nieprzezroczystość) na 1 dla loading spinnera
+                binding.loadingSpinner.alpha = 1f
 
+                // jeśli jest ładowanie danych -> ustawiamy kanał alpha (nieprzezroczystość) na 0 dla reszty (będą niewidoczne)
+                binding.targetWaterIntakeTv.alpha = 0f
+                binding.waterIntakeCountTv.alpha = 0f
+                binding.weatherIconImageView.alpha = 0f
+                binding.waterIconImageView.alpha = 0f
+                // Wyłączamy przysk (nie da sie w niego kliknąć)
+                binding.ourButton.isEnabled = false
+
+            } else {
+                // Jeśli już nie ładujemy danych, to loading spinner powinien zniknąć a reszta elementów powinna się pojawić
+                binding.loadingSpinner.alpha = 0f
+
+                binding.targetWaterIntakeTv.alpha = 1f
+                binding.waterIntakeCountTv.alpha = 1f
+                binding.weatherIconImageView.alpha = 1f
+                binding.waterIconImageView.alpha = 1f
+
+                binding.ourButton.isEnabled = true
             }
         }
 

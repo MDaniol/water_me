@@ -23,6 +23,11 @@ class WaterIntakeScreenViewModel: ViewModel() {
     private val _weather = MutableLiveData<WeatherData>()
     val weather: LiveData<WeatherData> get() = _weather
 
+    private val _isDataLoading = MutableLiveData<Boolean>()
+    val isDataLoading: LiveData<Boolean> get() = _isDataLoading
+
+
+
     // isDataLoading = LiveData<Boolean>...
 
     init {
@@ -31,15 +36,19 @@ class WaterIntakeScreenViewModel: ViewModel() {
     }
 
     private fun updateTargetWaterIntake() {
-        // isDataLoading.post(true)
-        targetWaterIntake = 20 // czas wykonania -> 3s
-        // isDataLoading.post(false)
+
+        targetWaterIntake = 20
+
     }
 
     private fun getWeather() {
+        // Wchodzimy w ViewModelScope, aby nie blokować wątku UI
+        // ViewModelScope - https://developer.android.com/topic/libraries/architecture/coroutines#viewmodelscope
         viewModelScope.launch {
-            val currentWeather = weatherRepository.getCurrentWeather()
-            _weather.postValue(currentWeather)
+            _isDataLoading.postValue(true) // indykator że rozpoczynamy ładowanie danych (jakaś operacja wymagająca czasu)
+            val currentWeather = weatherRepository.getCurrentWeather() // ww. operacja
+            _weather.postValue(currentWeather) // aktualizacja LiveData z danymi pogodowymi
+            _isDataLoading.postValue(false) // aktualizacja statusu ładowania
         }
     }
 
