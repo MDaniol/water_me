@@ -123,7 +123,6 @@ class WaterIntakeActivity : AppCompatActivity() {
             binding.waterIconImageView.alpha = 0f
             // Wyłączamy przysk (nie da sie w niego kliknąć)
             binding.ourButton.isEnabled = false
-
         } else {
             // Jeśli już nie ładujemy danych, to loading spinner powinien zniknąć a reszta elementów powinna się pojawić
             binding.loadingSpinner.alpha = 0f
@@ -139,23 +138,18 @@ class WaterIntakeActivity : AppCompatActivity() {
        uiState.weather?.let { weather ->
             when(weather.weatherKind) {
                 WeatherKind.SUNNY -> {
-                    Toast.makeText(this, "It's sunny outside!", Toast.LENGTH_LONG).show()
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_sunny))
                 }
                 WeatherKind.RAINY -> {
-                    Toast.makeText(this, "It's raining outside!", Toast.LENGTH_LONG).show()
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_thunder))
                 }
                 WeatherKind.SNOWY -> {
-                    Toast.makeText(this, "It's raining outside!", Toast.LENGTH_LONG).show()
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_snowy))
                 }
                 WeatherKind.CLOUDY -> {
-                    Toast.makeText(this, "It's raining outside!", Toast.LENGTH_LONG).show()
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_cloudy))
                 }
                 WeatherKind.NONE -> {
-                    Toast.makeText(this, "Unknown weather :( ", Toast.LENGTH_LONG).show()
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_question_mark))
                 }
             }
