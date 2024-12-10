@@ -2,6 +2,8 @@
     <string name="app_name">WaterMePro</string>
     <string name="button_text">Wypij Szklankę</string>
     <string name="target_water_intake_text">/%1$s</string>
-
-
+    <string name="text_sunny_weather">It\'s very sunny weather, you can drink more!</string>
+    <string name="text_rainy_weather">It\'s raining, no need to drink more</string>
+    <string name="text_snowy_weather">It\'s snowing, but stay hydrated</string>
+    <string name="text_cloudy_weather">Cloudy weather doesn\'t mean you don\'t need to drink</string>
 </resources>

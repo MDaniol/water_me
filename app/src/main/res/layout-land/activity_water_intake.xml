@@ -88,4 +88,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/weather_description_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="Weather Description"
+        android:textSize="12sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/waterIconImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/waterIconImageView"
+        app:layout_constraintTop_toTopOf="@+id/waterIconImageView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

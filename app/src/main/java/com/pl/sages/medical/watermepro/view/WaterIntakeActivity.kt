@@ -121,6 +121,7 @@ class WaterIntakeActivity : AppCompatActivity() {
             binding.waterIntakeCountTv.alpha = 0f
             binding.weatherIconImageView.alpha = 0f
             binding.waterIconImageView.alpha = 0f
+            binding.weatherDescriptionTv.alpha = 0f
             // Wyłączamy przysk (nie da sie w niego kliknąć)
             binding.ourButton.isEnabled = false
         } else {
@@ -131,6 +132,7 @@ class WaterIntakeActivity : AppCompatActivity() {
             binding.waterIntakeCountTv.alpha = 1f
             binding.weatherIconImageView.alpha = 1f
             binding.waterIconImageView.alpha = 1f
+            binding.weatherDescriptionTv.alpha = 1f
 
             binding.ourButton.isEnabled = true
         }
@@ -139,15 +141,19 @@ class WaterIntakeActivity : AppCompatActivity() {
             when(weather.weatherKind) {
                 WeatherKind.SUNNY -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_sunny))
+                    binding.weatherDescriptionTv.text = getString(R.string.text_sunny_weather)
                 }
                 WeatherKind.RAINY -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_thunder))
+                    binding.weatherDescriptionTv.text = getString(R.string.text_rainy_weather)
                 }
                 WeatherKind.SNOWY -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_snowy))
+                    binding.weatherDescriptionTv.text = getString(R.string.text_snowy_weather)
                 }
                 WeatherKind.CLOUDY -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_cloudy))
+                    binding.weatherDescriptionTv.text = getString(R.string.text_cloudy_weather)
                 }
                 WeatherKind.NONE -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_question_mark))
