@@ -11,8 +11,9 @@ class WeatherRepository {
     val remoteWeatherProvider = RemoteWeatherProvider()
     val persistenceWeatherProvider = PersistenceWeatherProvider()
 
-    fun getCurrentWeather(): WeatherData {
-        return WeatherData(temperature = 23, WeatherKind.SUNNY, "ic_sunny")
+    suspend fun getCurrentWeather(): WeatherData {
+        val weather = remoteWeatherProvider.getCurrentWeather()
+        return weather
     }
 }
 

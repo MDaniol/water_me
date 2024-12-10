@@ -3,8 +3,10 @@ package com.pl.sages.medical.watermepro.view
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.repositories.WeatherRepository
+import kotlinx.coroutines.launch
 
 class WaterIntakeScreenViewModel: ViewModel() {
     var targetWaterIntake: Int = 0
@@ -35,7 +37,10 @@ class WaterIntakeScreenViewModel: ViewModel() {
     }
 
     private fun getWeather() {
-        _weather.postValue(weatherRepository.getCurrentWeather())
+        viewModelScope.launch {
+            val currentWeather = weatherRepository.getCurrentWeather()
+            _weather.postValue(currentWeather)
+        }
     }
 
     fun incrementWaterIntake() {
