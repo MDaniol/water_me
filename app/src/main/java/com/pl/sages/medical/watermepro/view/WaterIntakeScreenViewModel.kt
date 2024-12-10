@@ -3,6 +3,7 @@ package com.pl.sages.medical.watermepro.view
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.repositories.WeatherRepository
 
 class WaterIntakeScreenViewModel: ViewModel() {
@@ -17,8 +18,8 @@ class WaterIntakeScreenViewModel: ViewModel() {
     private val _waterIntakeCount = MutableLiveData(0) // MutableLiveData - tutaj mozemy zmieniac wartosc zmiennej
     val waterIntakeCount: LiveData<Int> get() = _waterIntakeCount // LiveData - tutaj mozemy tylko odczytywac, podlaczamy sie tutaj z zewnatrz (metoda observe w activity)
 
-    private val _weather = MutableLiveData<String>()
-    val weather: LiveData<String> get() = _weather
+    private val _weather = MutableLiveData<WeatherData>()
+    val weather: LiveData<WeatherData> get() = _weather
 
     // isDataLoading = LiveData<Boolean>...
 

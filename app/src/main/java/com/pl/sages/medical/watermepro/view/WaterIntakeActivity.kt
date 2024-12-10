@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ActivityWaterIntakeBinding
+import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
 
 class WaterIntakeActivity : AppCompatActivity() {
 
@@ -73,16 +74,29 @@ class WaterIntakeActivity : AppCompatActivity() {
         }
 
         viewModel.weather.observe(this) { weather ->
-            when(weather) {
-                "Sunny" -> {
+            when(weather.weatherKind) {
+                WeatherKind.SUNNY -> {
                     Toast.makeText(this, "It's sunny outside!", Toast.LENGTH_LONG).show()
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_sunny))
                 }
-                "Rainy" -> {
+                WeatherKind.RAINY -> {
                     Toast.makeText(this, "It's raining outside!", Toast.LENGTH_LONG).show()
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_thunder))
-
                 }
+                WeatherKind.SNOWY -> {
+                    Toast.makeText(this, "It's raining outside!", Toast.LENGTH_LONG).show()
+                    binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_snowy))
+                }
+                WeatherKind.CLOUDY -> {
+                    Toast.makeText(this, "It's raining outside!", Toast.LENGTH_LONG).show()
+                    binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_cloudy))
+                }
+                WeatherKind.NONE -> {
+                    Toast.makeText(this, "Unknown weather :( ", Toast.LENGTH_LONG).show()
+                    binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_question_mark))
+                }
+
+
             }
         }
 
