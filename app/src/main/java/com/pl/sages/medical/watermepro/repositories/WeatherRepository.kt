@@ -12,11 +12,17 @@ class WeatherRepository {
     val remoteWeatherProvider = RemoteWeatherProvider()
     val persistenceWeatherProvider = PersistenceWeatherProvider()
 
+    private var currentWeather: WeatherData? = null
+
     // suspen -> funkcja zawieszająca (asynchroniczna, nie blokująca wątku)
     suspend fun getCurrentWeather(): WeatherData {
         // WYwołanie kolejnej funkcji suspend z remoteWeatherProvidera
-        val weather = remoteWeatherProvider.getCurrentWeather()
-        return weather
+        if (currentWeather == null) {
+            currentWeather = remoteWeatherProvider.getCurrentWeather()
+            return currentWeather!!
+        } else {
+            return currentWeather!!
+        }
     }
 
     fun getWeatherForecast(): List<ForecastViewData> {

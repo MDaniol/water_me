@@ -1,10 +1,15 @@
 package com.pl.sages.medical.watermepro.view.details
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pl.sages.medical.watermepro.Container
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
 import com.pl.sages.medical.watermepro.repositories.WeatherRepository
+import com.pl.sages.medical.watermepro.view.intake.UiState
+import kotlinx.coroutines.launch
 
 class WeatherDetailsViewModel: ViewModel() {
 
@@ -14,11 +19,23 @@ class WeatherDetailsViewModel: ViewModel() {
 
     val forecastData: List<ForecastViewData> = repository.getWeatherForecast()
 
-    val currentWeather: WeatherData = WeatherData(
-        temperature = 34,
-        pressure = 1013,
-        description = "Sunny weather, without wind",
-        weatherKind = WeatherKind.SUNNY,
-        icon = "ic_sunny"
-    )
+    private val _currentWeather = MutableLiveData(WeatherData())
+    val currentWeather: LiveData<WeatherData> get() = _currentWeather
+
+    init {
+        getWeather()
+    }
+
+    fun getWeather() {
+        viewModelScope.launch {
+            _currentWeather.postValue(repository.getCurrentWeather())
+        }
+    }
+//    val currentWeather: WeatherData = WeatherData(
+//        temperature = 34,
+//        pressure = 1013,
+//        description = "Sunny weather, without wind",
+//        weatherKind = WeatherKind.SUNNY,
+//        icon = "ic_sunny"
+//    )
 }

@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ActivityWeatherDetailsBinding
+import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
 
 class WeatherDetailsActivity : AppCompatActivity() {
@@ -45,16 +46,22 @@ class WeatherDetailsActivity : AppCompatActivity() {
         // (2) ustawiamy rodzaj layoutu dla RecyclerView i ustawiamy jego orientację (pionową - Vertical)
         binding.weatherForecastRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        initUi()
+        observeViewModel()
     }
 
-    private fun initUi() {
+    private fun observeViewModel() {
+        viewModel.currentWeather.observe(this) { currentWeather ->
+            setupUi(currentWeather)
+        }
+    }
+
+    private fun setupUi(weather: WeatherData) {
 
         binding.temperatureTv.text =
-            getString(R.string.weather_details_temperature, viewModel.currentWeather.temperature)
+            getString(R.string.weather_details_temperature, weather.temperature)
         binding.pressureTv.text =
-            getString(R.string.weather_details_pressure, viewModel.currentWeather.pressure)
+            getString(R.string.weather_details_pressure, weather.pressure)
 
-        binding.descriptionTv.text = viewModel.currentWeather.description
+        binding.descriptionTv.text = weather.description
     }
 }
