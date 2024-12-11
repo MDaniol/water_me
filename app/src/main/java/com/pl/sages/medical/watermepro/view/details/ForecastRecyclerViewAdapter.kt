@@ -10,7 +10,6 @@ import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
 
 
 class ForecastRecyclerViewAdapter(private var forecast: List<ForecastViewData> = emptyList()): RecyclerView.Adapter<ForecastRecyclerViewAdapter.ViewHolder>() {
-
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = ItemForecastBinding.bind(view)
 
