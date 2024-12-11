@@ -12,6 +12,8 @@ class WeatherDetailsViewModel: ViewModel() {
 
     private val repository: WeatherRepository = Container.provideWeatherRepository()
 
+    val forecastData: List<ForecastViewData> = repository.getWeatherForecast()
+
     val currentWeather: WeatherData = WeatherData(
         temperature = 34,
         pressure = 1013,

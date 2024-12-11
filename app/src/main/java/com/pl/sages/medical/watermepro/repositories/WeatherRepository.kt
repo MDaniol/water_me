@@ -4,6 +4,7 @@ import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
 import com.pl.sages.medical.watermepro.domains.weather.persistence.PersistenceWeatherProvider
 import com.pl.sages.medical.watermepro.domains.weather.remote.RemoteWeatherProvider
+import com.pl.sages.medical.watermepro.view.details.ForecastViewData
 
 class WeatherRepository {
     // Zadanie: dostarczyć informacje pogodowe (offline, online)
@@ -16,6 +17,10 @@ class WeatherRepository {
         // WYwołanie kolejnej funkcji suspend z remoteWeatherProvidera
         val weather = remoteWeatherProvider.getCurrentWeather()
         return weather
+    }
+
+    fun getWeatherForecast(): List<ForecastViewData> {
+        return remoteWeatherProvider.getWeatherForecast()
     }
 }
 

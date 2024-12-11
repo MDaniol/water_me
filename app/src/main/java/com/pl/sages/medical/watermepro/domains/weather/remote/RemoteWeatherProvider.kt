@@ -2,6 +2,7 @@ package com.pl.sages.medical.watermepro.domains.weather.remote
 
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
+import com.pl.sages.medical.watermepro.view.details.ForecastViewData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -22,5 +23,82 @@ class RemoteWeatherProvider() {
                 weatherKind = WeatherKind.RAINY,
                 icon = "ic_rainy") // zwracamy dane pogodowe
         }
+    }
+
+    fun getWeatherForecast(): List<ForecastViewData> {
+        return listOf(
+            ForecastViewData(
+                date = "2024-12-12",
+                temperature = "8",
+                pressure = "1013",
+                weatherKind = WeatherKind.CLOUDY
+            ),
+            ForecastViewData(
+                date = "2024-12-13",
+                temperature = "4",
+                pressure = "1013",
+                weatherKind = WeatherKind.CLOUDY
+            ),
+            ForecastViewData(
+                date = "2024-12-14",
+                temperature = "8",
+                pressure = "1013",
+                weatherKind = WeatherKind.SUNNY
+            ),
+            ForecastViewData(
+                date = "2024-12-12",
+                temperature = "8",
+                pressure = "1013",
+                weatherKind = WeatherKind.CLOUDY
+            ),
+            ForecastViewData(
+                date = "2024-12-13",
+                temperature = "4",
+                pressure = "1013",
+                weatherKind = WeatherKind.CLOUDY
+            ),
+            ForecastViewData(
+                date = "2024-12-14",
+                temperature = "8",
+                pressure = "1013",
+                weatherKind = WeatherKind.SUNNY
+            ),
+            ForecastViewData(
+                date = "2024-12-12",
+                temperature = "8",
+                pressure = "1013",
+                weatherKind = WeatherKind.CLOUDY
+            ),
+            ForecastViewData(
+                date = "2024-12-13",
+                temperature = "4",
+                pressure = "1013",
+                weatherKind = WeatherKind.CLOUDY
+            ),
+            ForecastViewData(
+                date = "2024-12-14",
+                temperature = "8",
+                pressure = "1013",
+                weatherKind = WeatherKind.SUNNY
+            ),
+            ForecastViewData(
+                date = "2024-12-12",
+                temperature = "8",
+                pressure = "1013",
+                weatherKind = WeatherKind.CLOUDY
+            ),
+            ForecastViewData(
+                date = "2024-12-13",
+                temperature = "4",
+                pressure = "1013",
+                weatherKind = WeatherKind.CLOUDY
+            ),
+            ForecastViewData(
+                date = "2024-12-14",
+                temperature = "8",
+                pressure = "1013",
+                weatherKind = WeatherKind.SUNNY
+            )
+        )
     }
 }

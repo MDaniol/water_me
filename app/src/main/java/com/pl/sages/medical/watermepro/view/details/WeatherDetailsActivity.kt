@@ -39,82 +39,8 @@ class WeatherDetailsActivity : AppCompatActivity() {
             insets
         }
 
-        val defaultData = listOf(
-            ForecastViewData(
-                date = "2024-12-12",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-13",
-                temperature = "4",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-14",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.SUNNY
-            ),
-            ForecastViewData(
-                date = "2024-12-12",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-13",
-                temperature = "4",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-14",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.SUNNY
-            ),
-            ForecastViewData(
-                date = "2024-12-12",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-13",
-                temperature = "4",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-14",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.SUNNY
-            ),
-            ForecastViewData(
-                date = "2024-12-12",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-13",
-                temperature = "4",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-14",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.SUNNY
-            )
-        )
         // (1) ustawiamy adapter dla naszego RecyclerView to ForecastRecyclerViewAdapter który przyjmuje dany z listy defaultData
-        binding.weatherForecastRecyclerView.adapter = ForecastRecyclerViewAdapter(defaultData)
+        binding.weatherForecastRecyclerView.adapter = ForecastRecyclerViewAdapter(viewModel.forecastData)
 
         // (2) ustawiamy rodzaj layoutu dla RecyclerView i ustawiamy jego orientację (pionową - Vertical)
         binding.weatherForecastRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
