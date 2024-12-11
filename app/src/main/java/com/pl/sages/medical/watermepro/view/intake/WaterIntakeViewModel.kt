@@ -1,4 +1,4 @@
-package com.pl.sages.medical.watermepro.view
+package com.pl.sages.medical.watermepro.view.intake
 
 import com.pl.sages.medical.watermepro.view.model.WaterIntake
 import java.util.Date

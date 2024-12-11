@@ -1,4 +1,4 @@
-package com.pl.sages.medical.watermepro.view
+package com.pl.sages.medical.watermepro.view.intake
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

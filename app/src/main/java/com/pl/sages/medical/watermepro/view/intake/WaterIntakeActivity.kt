@@ -1,4 +1,4 @@
-package com.pl.sages.medical.watermepro.view
+package com.pl.sages.medical.watermepro.view.intake
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ActivityWaterIntakeBinding
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
+import com.pl.sages.medical.watermepro.view.details.WeatherDetailsActivity
 
 class WaterIntakeActivity : AppCompatActivity() {
 

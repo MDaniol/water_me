@@ -6,4 +6,6 @@
     <string name="text_rainy_weather">It\'s raining, no need to drink more</string>
     <string name="text_snowy_weather">It\'s snowing, but stay hydrated</string>
     <string name="text_cloudy_weather">Cloudy weather doesn\'t mean you don\'t need to drink</string>
+    <string name="weather_details_temperature">%1$d °C</string>
+    <string name="weather_details_pressure">%1$d hPa</string>
 </resources>

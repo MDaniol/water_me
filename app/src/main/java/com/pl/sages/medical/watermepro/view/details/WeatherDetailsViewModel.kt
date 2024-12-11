@@ -1,4 +1,4 @@
-package com.pl.sages.medical.watermepro.view
+package com.pl.sages.medical.watermepro.view.details
 
 import androidx.lifecycle.ViewModel
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData

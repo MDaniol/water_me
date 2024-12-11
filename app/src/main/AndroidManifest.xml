@@ -13,10 +13,10 @@
         android:theme="@style/Theme.WaterMePro"
         tools:targetApi="31">
         <activity
-            android:name=".view.WeatherDetailsActivity"
+            android:name=".view.details.WeatherDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".view.WaterIntakeActivity"
+            android:name=".view.intake.WaterIntakeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
