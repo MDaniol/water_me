@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.pl.sages.medical.watermepro.Container
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ActivityWaterIntakeBinding
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
@@ -35,6 +36,8 @@ class WaterIntakeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Container.initialize(this)
 
         Log.d("MainActivity", "onCreate")
 

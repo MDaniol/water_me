@@ -7,10 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ActivityWeatherDetailsBinding
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
+import com.pl.sages.medical.watermepro.domains.weather.persistence.WeatherDatabase
 
 class WeatherDetailsActivity : AppCompatActivity() {
 
@@ -19,6 +21,8 @@ class WeatherDetailsActivity : AppCompatActivity() {
     private val binding: ActivityWeatherDetailsBinding by lazy {
         ActivityWeatherDetailsBinding.inflate(layoutInflater)
     }
+
+//    private lateinit var database: WeatherDatabase
 
     private val viewModel: WeatherDetailsViewModel by viewModels()
 
@@ -31,6 +35,10 @@ class WeatherDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initView()
+
+//        database = Room.databaseBuilder(this, WeatherDatabase::class.java, "weather-database")
+//            .fallbackToDestructiveMigration()
+//            .build()
     }
 
     private fun initView() {

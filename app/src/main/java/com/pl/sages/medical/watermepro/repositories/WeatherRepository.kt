@@ -1,8 +1,10 @@
 package com.pl.sages.medical.watermepro.repositories
 
+import com.pl.sages.medical.watermepro.Container
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
 import com.pl.sages.medical.watermepro.domains.weather.persistence.PersistenceWeatherProvider
+import com.pl.sages.medical.watermepro.domains.weather.persistence.entity.CurrentWeatherEntity
 import com.pl.sages.medical.watermepro.domains.weather.remote.DailyWeatherDto
 import com.pl.sages.medical.watermepro.domains.weather.remote.RemoteWeatherProvider
 import com.pl.sages.medical.watermepro.domains.weather.remote.ResponseDto
@@ -16,14 +18,25 @@ class WeatherRepository {
 
     private var weatherData: WeatherData? = null
 
+    private val database = Container.provideWeatherDatabase()
+
 //    private fun getWeather() {
 //        weatherDto = remoteWeatherProvider.getWeatherForecast()
 //    }
 
     suspend fun getCurrentWeather(): WeatherData {
-
         if (weatherData == null) {
             weatherData = remoteWeatherProvider.getWeatherForecast()
+
+            val currentWeatherEntity = CurrentWeatherEntity(
+                id = null,
+                temperature = weatherData!!.temperature.toDouble(),
+                pressure = weatherData!!.pressure,
+                time = "time",
+                interval = 300,
+                weatherCode = 0,
+            )
+            database.currentWeatherDao().save(currentWeatherEntity)
             return weatherData!!
         } else {
             return weatherData!!

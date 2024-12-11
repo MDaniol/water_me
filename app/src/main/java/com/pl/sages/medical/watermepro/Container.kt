@@ -1,6 +1,9 @@
 package com.pl.sages.medical.watermepro
 
+import android.content.Context
+import androidx.room.Room
 import com.google.gson.annotations.SerializedName
+import com.pl.sages.medical.watermepro.domains.weather.persistence.WeatherDatabase
 import com.pl.sages.medical.watermepro.domains.weather.remote.OpenMeteoApi
 import com.pl.sages.medical.watermepro.repositories.WeatherRepository
 import retrofit2.Retrofit
@@ -28,8 +31,23 @@ private val openMeteoApi = Retrofit
 
 
 object Container {
+
+    private lateinit var appContext: Context
+
+    // Inicjalizacja kontenera Contextem - aby mieć dostęp do plików (w tym pliku bazy danych Room)
+    fun initialize(context: Context) {
+        appContext = context
+    }
+
     fun provideWeatherRepository() = weatherRepository
     fun provideOpenMeteoApi() = openMeteoApi
+
+    // (6) Dostęp BD z obszaru całej aplikacji - zwraca instancję bazy danych
+    // TODO: Przerobić aby nie tworzyć nowej instancji za każdym razem!
+    fun provideWeatherDatabase(): WeatherDatabase {
+        return Room.databaseBuilder(appContext, WeatherDatabase::class.java, "weather-database")
+            .build()
+    }
 }
 
 
