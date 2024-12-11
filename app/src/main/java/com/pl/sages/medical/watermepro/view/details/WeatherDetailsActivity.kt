@@ -57,10 +57,21 @@ class WeatherDetailsActivity : AppCompatActivity() {
 
     private fun setupUi(weather: WeatherData) {
 
+        binding.imageView.setImageResource(
+            when (weather.weatherKind) {
+                WeatherKind.SUNNY -> R.drawable.ic_sunny
+                WeatherKind.CLOUDY -> R.drawable.ic_cloudy
+                WeatherKind.RAINY -> R.drawable.ic_thunder
+                WeatherKind.SNOWY -> R.drawable.ic_snowy
+                WeatherKind.FOGGY -> R.drawable.ic_foggy
+                WeatherKind.NONE -> R.drawable.ic_question_mark
+            }
+        )
+
         binding.temperatureTv.text =
             getString(R.string.weather_details_temperature, weather.temperature)
         binding.pressureTv.text =
-            getString(R.string.weather_details_pressure, weather.pressure)
+            getString(R.string.weather_details_pressure, weather.pressure.toInt())
 
         binding.descriptionTv.text = weather.description
     }

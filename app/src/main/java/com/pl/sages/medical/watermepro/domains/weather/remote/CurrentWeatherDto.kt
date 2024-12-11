@@ -8,5 +8,6 @@ data class CurrentWeatherDto(
     val time: String,
     val interval: Int,
     @SerializedName("temperature_2m") val temperature: Double,
-    @SerializedName("weather_code") val weatherCode: Int
+    @SerializedName("weather_code") val weatherCode: Int,
+    @SerializedName("surface_pressure") val pressure: Double,
 )

@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 
-private val weatherReposiotory by lazy { WeatherRepository() }
+private val weatherRepository by lazy { WeatherRepository() }
 
 // Container jest singletonem (wzorzec projektowy) który zapewnia dostęp do serwisów i repozytoriów z wielu miejsc w aplikacji,
 // pilnując aby istniał tylko jeden obiekt danego serwisu/repozytorium.
@@ -28,7 +28,7 @@ private val openMeteoApi = Retrofit
 
 
 object Container {
-    fun provideWeatherRepository() = weatherReposiotory
+    fun provideWeatherRepository() = weatherRepository
     fun provideOpenMeteoApi() = openMeteoApi
 }
 

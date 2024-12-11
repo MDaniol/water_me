@@ -5,5 +5,6 @@ enum class WeatherKind {
     RAINY,
     CLOUDY,
     SNOWY,
+    FOGGY,
     NONE
 }

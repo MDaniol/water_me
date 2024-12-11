@@ -139,25 +139,28 @@ class WaterIntakeActivity : AppCompatActivity() {
         }
 
        uiState.weather?.let { weather ->
+
+           binding.weatherDescriptionTv.text = weather.description
+
             when(weather.weatherKind) {
                 WeatherKind.SUNNY -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_sunny))
-                    binding.weatherDescriptionTv.text = getString(R.string.text_sunny_weather)
                 }
                 WeatherKind.RAINY -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_thunder))
-                    binding.weatherDescriptionTv.text = getString(R.string.text_rainy_weather)
                 }
                 WeatherKind.SNOWY -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_snowy))
-                    binding.weatherDescriptionTv.text = getString(R.string.text_snowy_weather)
                 }
                 WeatherKind.CLOUDY -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_cloudy))
-                    binding.weatherDescriptionTv.text = getString(R.string.text_cloudy_weather)
                 }
                 WeatherKind.NONE -> {
                     binding.weatherIconImageView.setImageIcon(Icon.createWithResource(this, R.drawable.ic_question_mark))
+                }
+
+                WeatherKind.FOGGY -> {
+                    binding.weatherIconImageView.setImageResource(R.drawable.ic_foggy)
                 }
             }
         }

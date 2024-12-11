@@ -7,18 +7,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ItemForecastBinding
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
+import com.pl.sages.medical.watermepro.repositories.DailyForecast
 
 
-class ForecastRecyclerViewAdapter(private var forecast: List<ForecastViewData> = emptyList()): RecyclerView.Adapter<ForecastRecyclerViewAdapter.ViewHolder>() {
+class ForecastRecyclerViewAdapter(private var forecast: List<DailyForecast> = emptyList()): RecyclerView.Adapter<ForecastRecyclerViewAdapter.ViewHolder>() {
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = ItemForecastBinding.bind(view)
 
         // (6) Aktualizacja widoku pojedynczego widoku (kafelka) danymi z obiektu ForecastViewData
-        fun update(forecast: ForecastViewData) {
+        fun update(forecast: DailyForecast) {
 
             // ustawiam teksty w TextView
-            binding.itemTemperatureTv.text = "${forecast.temperature} C"
-            binding.itemPressureTv.text = "${forecast.pressure} hPa"
+            binding.itemTemperatureTv.text = "${forecast.apparentTempMax} °C"
+            binding.itemPressureTv.text = "${forecast.windSpeedMax} km/h"
 
             // ustawiam ikonę w zależności od enuma WeatherKind
             when(forecast.weatherKind) {
@@ -26,6 +27,7 @@ class ForecastRecyclerViewAdapter(private var forecast: List<ForecastViewData> =
                 WeatherKind.RAINY -> binding.weatherIcon.setImageResource(R.drawable.ic_thunder)
                 WeatherKind.CLOUDY -> binding.weatherIcon.setImageResource(R.drawable.ic_cloudy)
                 WeatherKind.SNOWY -> binding.weatherIcon.setImageResource(R.drawable.ic_snowy)
+                WeatherKind.FOGGY -> binding.weatherIcon.setImageResource(R.drawable.ic_foggy)
                 WeatherKind.NONE -> binding.weatherIcon.setImageResource(R.drawable.ic_question_mark)
             }
         }

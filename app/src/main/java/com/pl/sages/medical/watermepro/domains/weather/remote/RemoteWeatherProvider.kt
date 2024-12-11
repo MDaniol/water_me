@@ -4,7 +4,9 @@ import android.util.Log
 import com.pl.sages.medical.watermepro.Container
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
+import com.pl.sages.medical.watermepro.repositories.WeatherRepository
 import com.pl.sages.medical.watermepro.view.details.ForecastViewData
+import okhttp3.Response
 
 class RemoteWeatherProvider() {
 
@@ -16,7 +18,7 @@ class RemoteWeatherProvider() {
 
     val openMetoApi = Container.provideOpenMeteoApi()
 
-    suspend fun getCurrentWeather(): WeatherData {
+    suspend fun getWeatherForecast(): WeatherData {
         val weatherForecast = openMetoApi.getWeatherForecast()
 
         Log.d(TAG, "Open Meteo Response: ${weatherForecast.toString()}")
@@ -27,87 +29,26 @@ class RemoteWeatherProvider() {
     fun responseDtoToWeatherData(responseDto: ResponseDto): WeatherData {
        return WeatherData(
             temperature = responseDto.current.temperature.toInt(),
-            pressure = 1013,
-            description = "Rainy weather, without any hope for sun",
+            pressure = responseDto.current.pressure,
+            description = WeatherCodeToWeatherDescription.map(responseDto.current.weatherCode),
             weatherKind = WeatherKind.RAINY,
-            icon = "ic_rainy"
+            icon = "ic_rainy",
+            weatherForecast = WeatherRepository.DailyWeatherDtoToDailyForecastMapper.map(responseDto.daily)
         )
     }
 
-    fun getWeatherForecast(): List<ForecastViewData> {
-        return listOf(
-            ForecastViewData(
-                date = "2024-12-12",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-13",
-                temperature = "4",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-14",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.SUNNY
-            ),
-            ForecastViewData(
-                date = "2024-12-12",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-13",
-                temperature = "4",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-14",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.SUNNY
-            ),
-            ForecastViewData(
-                date = "2024-12-12",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-13",
-                temperature = "4",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-14",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.SUNNY
-            ),
-            ForecastViewData(
-                date = "2024-12-12",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-13",
-                temperature = "4",
-                pressure = "1013",
-                weatherKind = WeatherKind.CLOUDY
-            ),
-            ForecastViewData(
-                date = "2024-12-14",
-                temperature = "8",
-                pressure = "1013",
-                weatherKind = WeatherKind.SUNNY
-            )
-        )
+}
+
+object WeatherCodeToWeatherDescription {
+    fun map(weatherCode: Int): String {
+        return when(weatherCode) {
+            0 -> "Perfect weather, enjoy!"
+            in 1..3 -> "Cloudy weather, but you can still go out"
+            in 40..49 -> "So called english weather"
+            in 50..69 -> "A bit weather, there is a hope for us"
+            in 70.. 79 -> "Snow is falling, lets make a snowman"
+            in 80..99 -> "Rainy weather, without any hope for sun"
+            else -> "Weather which is an unknown mixture of strange conditions"
+        }
     }
 }
