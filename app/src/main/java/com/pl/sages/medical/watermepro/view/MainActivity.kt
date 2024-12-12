@@ -9,6 +9,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ActivityMainBinding
 
@@ -28,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        val bottomNavigationBar = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationBar.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -46,4 +51,14 @@ class MainActivity : AppCompatActivity() {
  (6) - Przenosimy zawartość z plików Activity do Fragmentów (kod + XML)
  (7) - Ustawiamy zawartość MainActivity (setSupportActionBar, findNavController, AppBarConfiguration, setupActionBarWithNavController)
  (8) - W pliku nav_graph dodajemy fragment startowy i definiujemy że jest on startowy (ustawienie jego nazwy w startDestination)
+ */
+
+// Dodawanie Menu Dolnego (Bottom Navigation)
+
+/*
+(1) - Modyfikujemy content_main.xml dodając u dołu BottomNavigationView
+(2) - Dopasowujemy Constraints dla widoku fragmentu tak aby nie przesłaniał widoku menu
+(3) - Definiujemy plik bottom_navigation_menu.xml w folderze menu
+(4) - Dodajemy elementy do menu (itemy) z nazwami i ikonami, oraz z parametrem: android:id = "@id/weatherDetailsFragment" z nazwą konkretnego fragmentu wziętą z navigation graph
+(5) - W MainActivity w metodzie onCreate ustawiamy bottomNavigationBar.setupWithNavController(navController)
  */

@@ -12,9 +12,9 @@
             android:id="@+id/go_to_weather_details"
             app:destination="@id/weatherDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/weatherDetailsFragment"
         android:name="com.pl.sages.medical.watermepro.view.details.WeatherDetailsFragment"
         android:label="Weather Details" />
-
 </navigation>
