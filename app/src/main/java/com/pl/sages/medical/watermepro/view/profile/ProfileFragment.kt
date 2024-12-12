@@ -163,6 +163,13 @@ class ProfileFragment : Fragment() {
     private val requestGallery = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             Log.d("Gallery", "Result OK")
+            result.data?.data?.let { uri ->
+                Picasso.get()
+                    .load(uri)
+                    .resize(200,200)
+                    .transform(GrayscaleTransformation())
+                    .into(binding.avatarImageView)
+            }
         }
     }
 
