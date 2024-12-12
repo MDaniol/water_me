@@ -56,4 +56,9 @@ class WaterIntakeScreenViewModel: ViewModel() {
         waterRepository.setWaterForToday(currentCount)
         _uiState.value = _uiState.value?.copy(waterIntakeCount = currentCount)
     }
+
+    fun handleDateChange() {
+        waterRepository.setWaterForToday(0)
+        getWaterForToday()
+    }
 }

@@ -3,7 +3,10 @@ package com.pl.sages.medical.watermepro.view.intake
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
@@ -30,6 +34,7 @@ class WaterIntakeFragment : Fragment() {
     private val TAG = WaterIntakeFragment::class.qualifiedName
 
     private lateinit var binding: FragmentWaterIntakeBinding
+    private lateinit var dateChangeReceiver: BroadcastReceiver
 
     val viewModel: WaterIntakeScreenViewModel by viewModels()
 
@@ -38,6 +43,29 @@ class WaterIntakeFragment : Fragment() {
         private const val FADE_OUT_DURATION = 150L
         private const val FIRST_ACHIEVEMENT_COUNT = 5
         private const val SECOND_ACHIEVEMENT_COUNT = 10
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // (1) Rejestracja odbiorcy zmiany daty, w momencie kiedy data w systemie się zmieni -> wywołana zostanie metoda onReceive
+        // W naszym przypadku metoda onReceive wywoła metodę handleDateChange z naszego viewModelu
+        // object: BroadcastReceiver() -> tworzymy instancję klasy anonimowej dziedziczącej po BroadcastReceiver, w sposób podobny do lambdy, uproszczony
+        dateChangeReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                viewModel.handleDateChange() // Odwołanie do ViewModelu
+            }
+        }
+
+        val intentFilter = IntentFilter(Intent.ACTION_DATE_CHANGED)
+        // Rejestracja broadcast receivera w kontekście naszej aplikacji
+        requireContext().registerReceiver(dateChangeReceiver, intentFilter)
+    }
+
+    // Ważne! W momencie kiedy fragmen jest niszczony (usuwany z pamieci) - nalezy wyrejestrować broadcast receivera
+    override fun onDestroy() {
+        super.onDestroy()
+        requireContext().unregisterReceiver(dateChangeReceiver)
     }
 
     // Metoda cyklu zycia fragmentu: https://developer.android.com/guide/fragments/lifecycle
