@@ -33,20 +33,24 @@ private val openMeteoApi = Retrofit
 object Container {
 
     private lateinit var appContext: Context
-
+    private lateinit var database: WeatherDatabase
     // Inicjalizacja kontenera Contextem - aby mieć dostęp do plików (w tym pliku bazy danych Room)
     fun initialize(context: Context) {
         appContext = context
+        database = Room.databaseBuilder(appContext, WeatherDatabase::class.java, "weather-database")
+            .fallbackToDestructiveMigration() // (1)
+            .build()
+
+        // (1) -> W przypadku zmiany schematu bazy danych, Room "migruje" dane poprzez zniszczenie starej bazy i stworzenie nowej.
+        // Inne strategie migracji: Automigration, Manual Migration: https://developer.android.com/training/data-storage/room/migrating-db-versions
     }
 
     fun provideWeatherRepository() = weatherRepository
     fun provideOpenMeteoApi() = openMeteoApi
 
     // (6) Dostęp BD z obszaru całej aplikacji - zwraca instancję bazy danych
-    // TODO: Przerobić aby nie tworzyć nowej instancji za każdym razem!
     fun provideWeatherDatabase(): WeatherDatabase {
-        return Room.databaseBuilder(appContext, WeatherDatabase::class.java, "weather-database")
-            .build()
+        return database
     }
 }
 
