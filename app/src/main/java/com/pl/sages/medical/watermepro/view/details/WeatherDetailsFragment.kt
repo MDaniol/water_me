@@ -5,56 +5,67 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pl.sages.medical.watermepro.R
+import com.pl.sages.medical.watermepro.databinding.FragmentWeatherDetailsBinding
+import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
+import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [WeatherDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WeatherDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val viewModel: WeatherDetailsViewModel by viewModels()
+
+    private val binding: FragmentWeatherDetailsBinding by lazy {
+        FragmentWeatherDetailsBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_weather_details, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WeatherDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WeatherDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    fun initView() {
+        // (1) ustawiamy adapter dla naszego RecyclerView to ForecastRecyclerViewAdapter który przyjmuje dany z listy defaultData
+        binding.weatherForecastRecyclerView.adapter = ForecastRecyclerViewAdapter(viewModel.forecastData)
+
+        // (2) ustawiamy rodzaj layoutu dla RecyclerView i ustawiamy jego orientację (pionową - Vertical)
+        binding.weatherForecastRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.currentWeather.observe(viewLifecycleOwner) { currentWeather ->
+            setupUi(currentWeather)
+        }
+    }
+
+    private fun setupUi(weather: WeatherData) {
+
+        binding.imageView.setImageResource(
+            when (weather.weatherKind) {
+                WeatherKind.SUNNY -> R.drawable.ic_sunny
+                WeatherKind.CLOUDY -> R.drawable.ic_cloudy
+                WeatherKind.RAINY -> R.drawable.ic_thunder
+                WeatherKind.SNOWY -> R.drawable.ic_snowy
+                WeatherKind.FOGGY -> R.drawable.ic_foggy
+                WeatherKind.NONE -> R.drawable.ic_question_mark
             }
+        )
+
+        binding.temperatureTv.text =
+            getString(R.string.weather_details_temperature, weather.temperature)
+        binding.pressureTv.text =
+            getString(R.string.weather_details_pressure, weather.pressure.toInt())
+
+        binding.descriptionTv.text = weather.description
     }
 }

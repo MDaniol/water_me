@@ -16,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.pl.sages.medical.watermepro.Container
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ActivityWaterIntakeBinding
@@ -70,7 +71,7 @@ class WaterIntakeFragment : Fragment() {
     }
 
     private fun goToWeatherDetails() {
-
+        findNavController().navigate(R.id.go_to_weather_details)
     }
 
     private fun buttonTapHandler() {
