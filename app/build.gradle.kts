@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.pl.sages.medical.watermepro"
-        minSdk = 30
+        minSdk = 34
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -56,6 +56,7 @@ dependencies {
 
     // Room DB (1) - Dodanie biblioteki Room
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.androidx.ui.graphics.android)
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.squareup.picasso:picasso:2.8")
