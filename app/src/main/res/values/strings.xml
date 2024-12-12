@@ -8,4 +8,6 @@
     <string name="text_cloudy_weather">Cloudy weather doesn\'t mean you don\'t need to drink</string>
     <string name="weather_details_temperature">%1$d °C</string>
     <string name="weather_details_pressure">%1$d hPa</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

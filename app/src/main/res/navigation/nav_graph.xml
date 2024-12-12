@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/waterIntakeFragment">
+
+    <fragment
+        android:id="@+id/waterIntakeFragment"
+        android:name="com.pl.sages.medical.watermepro.view.intake.WaterIntakeFragment"
+        android:label="WaterIntakeFragment" />
+
+</navigation>
