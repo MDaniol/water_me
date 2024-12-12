@@ -17,4 +17,9 @@
         android:id="@+id/weatherDetailsFragment"
         android:name="com.pl.sages.medical.watermepro.view.details.WeatherDetailsFragment"
         android:label="Weather Details" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.pl.sages.medical.watermepro.view.profile.ProfileFragment"
+        android:label="Profile" />
 </navigation>
