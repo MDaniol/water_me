@@ -3,6 +3,7 @@ package com.pl.sages.medical.watermepro
 import android.content.Context
 import androidx.room.Room
 import com.google.gson.annotations.SerializedName
+import com.pl.sages.medical.watermepro.domains.water.SharedPreferencesStore
 import com.pl.sages.medical.watermepro.domains.weather.persistence.WeatherDatabase
 import com.pl.sages.medical.watermepro.domains.weather.remote.OpenMeteoApi
 import com.pl.sages.medical.watermepro.repositories.WeatherRepository
@@ -34,12 +35,15 @@ object Container {
 
     private lateinit var appContext: Context
     private lateinit var database: WeatherDatabase
+    private lateinit var sharedPreferencesStore: SharedPreferencesStore
+
     // Inicjalizacja kontenera Contextem - aby mieć dostęp do plików (w tym pliku bazy danych Room)
     fun initialize(context: Context) {
         appContext = context
         database = Room.databaseBuilder(appContext, WeatherDatabase::class.java, "weather-database")
             .fallbackToDestructiveMigration() // (1)
             .build()
+        sharedPreferencesStore = SharedPreferencesStore(appContext)
 
         // (1) -> W przypadku zmiany schematu bazy danych, Room "migruje" dane poprzez zniszczenie starej bazy i stworzenie nowej.
         // Inne strategie migracji: Automigration, Manual Migration: https://developer.android.com/training/data-storage/room/migrating-db-versions
@@ -47,6 +51,7 @@ object Container {
 
     fun provideWeatherRepository() = weatherRepository
     fun provideOpenMeteoApi() = openMeteoApi
+    fun provideSharedPreferencesStore() = sharedPreferencesStore
 
     // (6) Dostęp BD z obszaru całej aplikacji - zwraca instancję bazy danych
     fun provideWeatherDatabase(): WeatherDatabase {

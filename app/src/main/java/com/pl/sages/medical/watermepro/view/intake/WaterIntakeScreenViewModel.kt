@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pl.sages.medical.watermepro.Container
+import com.pl.sages.medical.watermepro.domains.water.WaterRepository
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
 import com.pl.sages.medical.watermepro.repositories.WeatherRepository
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ data class UiState(
 class WaterIntakeScreenViewModel: ViewModel() {
 
     private val weatherRepository: WeatherRepository = Container.provideWeatherRepository()
+    private val waterRepository: WaterRepository = WaterRepository()
 
     private val _uiState = MutableLiveData(UiState())
     val uiState: LiveData<UiState> get() = _uiState
@@ -26,10 +28,16 @@ class WaterIntakeScreenViewModel: ViewModel() {
     init {
         updateTargetWaterIntake()
         getWeather()
+        getWaterForToday()
     }
 
     private fun updateTargetWaterIntake() {
         _uiState.value = _uiState.value?.copy(targetWaterIntake = 20)
+    }
+
+    private fun getWaterForToday() {
+        val waterForToday = waterRepository.getWaterForToday()
+        _uiState.value = _uiState.value?.copy(waterIntakeCount = waterForToday)
     }
 
     private fun getWeather() {
@@ -45,7 +53,7 @@ class WaterIntakeScreenViewModel: ViewModel() {
     fun incrementWaterIntake() {
         var currentCount = _uiState.value?.waterIntakeCount ?: 0
         currentCount++
+        waterRepository.setWaterForToday(currentCount)
         _uiState.value = _uiState.value?.copy(waterIntakeCount = currentCount)
-
     }
 }
