@@ -1,5 +1,6 @@
 package com.pl.sages.medical.watermepro.view.intake
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,8 @@ data class UiState(
     val waterIntakeCount: Int = 0,
     val targetWaterIntake: Int = 0,
     val weather: WeatherData? = null,
-    val isDataLoading: Boolean = true
+    val isDataLoading: Boolean = true,
+    val cityName: String = ""
 )
 
 class WaterIntakeScreenViewModel: ViewModel() {
@@ -60,5 +62,12 @@ class WaterIntakeScreenViewModel: ViewModel() {
     fun handleDateChange() {
         waterRepository.setWaterForToday(0)
         getWaterForToday()
+    }
+
+    fun updateCityName(name: String?) {
+        name?.let {
+            _uiState.value = _uiState.value?.copy(cityName = name)
+            Log.d("WaterIntakeScreenViewModel", "City name updated to: ${_uiState.value?.cityName}")
+        }
     }
 }

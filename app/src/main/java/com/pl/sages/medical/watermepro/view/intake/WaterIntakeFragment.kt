@@ -10,6 +10,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -98,7 +100,7 @@ class WaterIntakeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Container.initialize(requireContext())
         initView()
-        requestLocation()
+        requestLocation() // rozpoczynamy proces pobierania lokalizaji: (1) - sprawdzenie permisions, (2) gdy nie ma permissions to requestPermissions, (2a) gdy są permissions to getLastKnownLocation
     }
 
     private fun initView() {
@@ -210,23 +212,28 @@ class WaterIntakeFragment : Fragment() {
                 }
             }
         }
+
+        binding.cityTv.text = uiState.cityName
     }
 
     private fun presentToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+
+    // GPS (1) - zdefiniowanie requestu o pozwolenie użycia serwisów lokalizacyjnych
     val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                getLastKnownLocation()
+                getLastKnownLocation() // (2) jeśli użytkownik zaakceptował dokładną lokalizację to wchodzimy tutaj i pobieramy ją
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                getLastKnownLocation()
+                getLastKnownLocation() // (2a) jeśli nie, ale zaakceptował lokalizację z grubsza to wchodzimy tu
             }
             else -> {
+                // (3) jeśli użytkownik nie zaakceptował lokalizacji to wyświetlamy mu komunikat
                 Toast.makeText(requireContext(), "Location permission not granted", Toast.LENGTH_LONG).show()
             }
         }
@@ -240,6 +247,7 @@ class WaterIntakeFragment : Fragment() {
         }
     }
 
+    // Sprawdzamy czy permissions są przyznane
     private fun getLastKnownLocation() {
         if (checkSelfPermission(
                 requireContext(),
@@ -253,12 +261,14 @@ class WaterIntakeFragment : Fragment() {
             return
         }
 
+        // FusedLocationClient - klient który pośredniczy w dostępie do danych lokalizacyjnych (GPS, sieć)
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
-                Toast.makeText(requireContext(), "Location: lat:${location?.latitude} lon:${location?.longitude}", Toast.LENGTH_LONG).show()
+                handleLocation(location)
             }
     }
 
+    // Metoda uruchamiająca request o pozwolenie na lokalizację
     private fun requestLocationPermissions() {
         locationPermissionRequest.launch(REQUIRED_PERMISSIONS)
     }
@@ -270,5 +280,35 @@ class WaterIntakeFragment : Fragment() {
         return anyPermissionGranted
     }
 
+    // Jeśli dostaliśmy lokalizację -> dekodujemy adres z nią związany
+    private fun handleLocation(location: Location?) {
+        Toast.makeText(requireContext(), "Location: lat:${location?.latitude} lon:${location?.longitude}", Toast.LENGTH_LONG).show()
+
+//        if (location != null) {
+//            decodeAddressFromLocation(location)
+//        }
+        location?.let {
+            decodeAddressFromLocation(it)
+        }
+    }
+
+    // Dekodowanie adresu z lokalizacji
+    private fun decodeAddressFromLocation(location: Location) {
+        val geocoder = Geocoder(requireContext())
+        geocoder.getFromLocation(location.latitude, location.longitude, 6, object : Geocoder.GeocodeListener { // klasa anonimowa implementująca interfejs GeocodeListener
+            override fun onGeocode(addresses: MutableList<Address>) {
+                val decodedCity = addresses.firstOrNull()?.locality
+
+                // Uruchomienie na wątku głównym (!) https://developer.android.com/guide/components/processes-and-threads
+                requireActivity().runOnUiThread {
+                    updateCityName(decodedCity)
+                }
+            }
+        })
+    }
+
+    private fun updateCityName(cityName: String?) {
+        viewModel.updateCityName(cityName)
+    }
 
 }
