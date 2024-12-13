@@ -57,7 +57,6 @@ object Container {
     fun provideSharedPreferencesStore() = sharedPreferencesStore
     fun provideWaterRepository() = waterRepository
 
-
     // (6) Dostęp BD z obszaru całej aplikacji - zwraca instancję bazy danych
     fun provideWeatherDatabase(): WeatherDatabase {
         return database

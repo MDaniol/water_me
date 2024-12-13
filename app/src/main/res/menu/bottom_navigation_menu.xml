@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Intake"
+    <item
+        android:title="Intake"
         android:icon="@android:drawable/menu_frame"
         android:id="@id/waterIntakeFragment"/>
 
-    <item android:title="Weather"
-        android:icon="@drawable/ic_cloudy"
-        android:id="@id/weatherDetailsFragment"/>
+<!--    <item android:title="Weather"-->
+<!--        android:icon="@drawable/ic_cloudy"-->
+<!--        android:id="@id/weatherDetailsFragment"/>-->
 
     <item
         android:title="Profile"
         android:icon="@android:drawable/ic_menu_preferences"
         android:id="@id/profileFragment"/>
+
+    <item
+        android:title="History"
+        android:icon="@drawable/ic_history"
+        android:id="@id/historyFragment"/>
+
 </menu>

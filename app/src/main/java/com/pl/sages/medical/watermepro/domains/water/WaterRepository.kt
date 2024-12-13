@@ -4,6 +4,8 @@ import com.pl.sages.medical.watermepro.Container
 import com.pl.sages.medical.watermepro.domains.weather.persistence.entity.WaterIntakeDao
 import com.pl.sages.medical.watermepro.domains.weather.persistence.entity.WaterIntakeEntity
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -42,6 +44,12 @@ class WaterRepository(
     suspend fun getWaterIntakeHistory(): List<WaterIntake> {
         return waterIntakeDao.getWaterIntakeHistory().map {
             MapWaterIntakeEntityToWaterIntake.map(it)
+        }
+    }
+
+    fun getWaterIntakeHistoryFlow(): Flow<List<WaterIntake>> {
+        return waterIntakeDao.getWaterIntakeHistoryFlow().map {
+            it.map { MapWaterIntakeEntityToWaterIntake.map(it) }
         }
     }
 }

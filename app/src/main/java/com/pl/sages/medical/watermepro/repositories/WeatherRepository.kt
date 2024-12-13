@@ -43,6 +43,8 @@ class WeatherRepository {
         }
     }
 
+
+
     fun getWeatherForecast(): List<DailyForecast> {
        if (weatherData == null) {
            return emptyList()
