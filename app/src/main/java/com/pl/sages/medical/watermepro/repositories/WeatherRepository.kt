@@ -24,9 +24,9 @@ class WeatherRepository {
 //        weatherDto = remoteWeatherProvider.getWeatherForecast()
 //    }
 
-    suspend fun getCurrentWeather(): WeatherData {
+    suspend fun getCurrentWeather(lat: Double, lon: Double): WeatherData {
         if (weatherData == null) {
-            weatherData = remoteWeatherProvider.getWeatherForecast()
+            weatherData = remoteWeatherProvider.getWeatherForecast(lat, lon)
 
             val currentWeatherEntity = CurrentWeatherEntity(
                 id = null,

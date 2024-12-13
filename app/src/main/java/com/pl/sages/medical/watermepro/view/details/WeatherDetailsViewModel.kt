@@ -29,7 +29,7 @@ class WeatherDetailsViewModel: ViewModel() {
 
     fun getWeather() {
         viewModelScope.launch {
-            _currentWeather.postValue(repository.getCurrentWeather())
+            _currentWeather.postValue(repository.getCurrentWeather(45.55, 45.0))
         }
     }
 }

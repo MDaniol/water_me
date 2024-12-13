@@ -26,6 +26,14 @@ class RemoteWeatherProvider() {
         return responseDtoToWeatherData(weatherForecast)
     }
 
+    suspend fun getWeatherForecast(lat: Double, lon: Double): WeatherData {
+        val weatherForecast = openMetoApi.getWeatherForecastForLocation(lat,lon)
+
+        Log.d(TAG, "Open Meteo Response For Location: ${weatherForecast.toString()}")
+
+        return responseDtoToWeatherData(weatherForecast)
+    }
+
     fun responseDtoToWeatherData(responseDto: ResponseDto): WeatherData {
        return WeatherData(
             temperature = responseDto.current.temperature.toInt(),

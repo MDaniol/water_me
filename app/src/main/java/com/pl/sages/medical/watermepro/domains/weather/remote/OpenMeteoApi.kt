@@ -1,6 +1,7 @@
 package com.pl.sages.medical.watermepro.domains.weather.remote
 
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 //(5) Interfejs który mówi:
 // 1. Jaki rodzaj zapytania -tutaj GET
@@ -11,4 +12,7 @@ import retrofit2.http.GET
 interface OpenMeteoApi {
     @GET("forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weather_code,surface_pressure&daily=weather_code,apparent_temperature_max,wind_speed_10m_max")
     suspend fun getWeatherForecast(): ResponseDto
+
+    @GET("forecast?current=temperature_2m,weather_code,surface_pressure&daily=weather_code,apparent_temperature_max,wind_speed_10m_max")
+    suspend fun getWeatherForecastForLocation(@Query("latitude") lat: Double, @Query("longitude") lon: Double): ResponseDto
 }

@@ -1,5 +1,6 @@
 package com.pl.sages.medical.watermepro.view.intake
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.pl.sages.medical.watermepro.Container
 import com.pl.sages.medical.watermepro.domains.water.WaterRepository
 import com.pl.sages.medical.watermepro.domains.weather.models.WeatherData
+import com.pl.sages.medical.watermepro.domains.weather.models.WeatherKind
 import com.pl.sages.medical.watermepro.repositories.WeatherRepository
 import kotlinx.coroutines.launch
 
@@ -28,9 +30,9 @@ class WaterIntakeScreenViewModel: ViewModel() {
     val uiState: LiveData<UiState> get() = _uiState
 
     init {
-        updateTargetWaterIntake()
         getWeather()
         getWaterForToday()
+        updateTargetWaterIntake()
     }
 
     private fun updateTargetWaterIntake() {
@@ -42,12 +44,21 @@ class WaterIntakeScreenViewModel: ViewModel() {
         _uiState.value = _uiState.value?.copy(waterIntakeCount = waterForToday)
     }
 
+    private fun getWeatherForLocation(location: Location?) {
+        location?.let {
+            viewModelScope.launch {
+                val currentWeather = weatherRepository.getCurrentWeather(it.latitude, it.longitude)
+                _uiState.value = _uiState.value?.copy(weather = currentWeather)
+            }
+        }
+    }
+
     private fun getWeather() {
         // Wchodzimy w ViewModelScope, aby nie blokować wątku UI
         // ViewModelScope - https://developer.android.com/topic/libraries/architecture/coroutines#viewmodelscope
         viewModelScope.launch {
             _uiState.value = _uiState.value?.copy(isDataLoading = true)
-            val currentWeather = weatherRepository.getCurrentWeather()
+            val currentWeather = weatherRepository.getCurrentWeather(lat = 45.55, lon = 45.0)
             _uiState.value = _uiState.value?.copy(weather = currentWeather, isDataLoading = false)
         }
     }
@@ -69,5 +80,9 @@ class WaterIntakeScreenViewModel: ViewModel() {
             _uiState.value = _uiState.value?.copy(cityName = name)
             Log.d("WaterIntakeScreenViewModel", "City name updated to: ${_uiState.value?.cityName}")
         }
+    }
+
+    fun updateWeatherForLocation(location: Location?) {
+        getWeatherForLocation(location)
     }
 }

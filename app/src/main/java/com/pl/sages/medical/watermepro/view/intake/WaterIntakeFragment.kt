@@ -286,7 +286,10 @@ class WaterIntakeFragment : Fragment() {
 
 //        if (location != null) {
 //            decodeAddressFromLocation(location)
-//        }
+//        }\
+
+        viewModel.updateWeatherForLocation(location)
+
         location?.let {
             decodeAddressFromLocation(it)
         }
