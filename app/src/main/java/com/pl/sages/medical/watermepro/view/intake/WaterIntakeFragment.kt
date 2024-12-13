@@ -98,7 +98,6 @@ class WaterIntakeFragment : Fragment() {
     // Metoda cyklu życia fragmentu: https://developer.android.com/guide/fragments/lifecycle
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Container.initialize(requireContext())
         initView()
         requestLocation() // rozpoczynamy proces pobierania lokalizaji: (1) - sprawdzenie permisions, (2) gdy nie ma permissions to requestPermissions, (2a) gdy są permissions to getLastKnownLocation
     }
