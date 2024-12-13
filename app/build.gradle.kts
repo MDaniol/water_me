@@ -57,6 +57,7 @@ dependencies {
     // Room DB (1) - Dodanie biblioteki Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation(libs.androidx.ui.graphics.android)
+    implementation(libs.play.services.location)
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.squareup.picasso:picasso:2.8")

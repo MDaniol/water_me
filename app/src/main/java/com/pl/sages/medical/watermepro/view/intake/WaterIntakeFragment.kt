@@ -1,5 +1,6 @@
 package com.pl.sages.medical.watermepro.view.intake
 
+import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
@@ -7,7 +8,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,12 +18,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.ContextCompat.registerReceiver
+import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.pl.sages.medical.watermepro.Container
 import com.pl.sages.medical.watermepro.R
 import com.pl.sages.medical.watermepro.databinding.ActivityWaterIntakeBinding
@@ -35,6 +43,7 @@ class WaterIntakeFragment : Fragment() {
 
     private lateinit var binding: FragmentWaterIntakeBinding
     private lateinit var dateChangeReceiver: BroadcastReceiver
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     val viewModel: WaterIntakeScreenViewModel by viewModels()
 
@@ -43,6 +52,10 @@ class WaterIntakeFragment : Fragment() {
         private const val FADE_OUT_DURATION = 150L
         private const val FIRST_ACHIEVEMENT_COUNT = 5
         private const val SECOND_ACHIEVEMENT_COUNT = 10
+
+        private val REQUIRED_PERMISSIONS = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +73,8 @@ class WaterIntakeFragment : Fragment() {
         val intentFilter = IntentFilter(Intent.ACTION_DATE_CHANGED)
         // Rejestracja broadcast receivera w kontekście naszej aplikacji
         requireContext().registerReceiver(dateChangeReceiver, intentFilter)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
     // Ważne! W momencie kiedy fragmen jest niszczony (usuwany z pamieci) - nalezy wyrejestrować broadcast receivera
@@ -83,6 +98,7 @@ class WaterIntakeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Container.initialize(requireContext())
         initView()
+        requestLocation()
     }
 
     private fun initView() {
@@ -199,4 +215,60 @@ class WaterIntakeFragment : Fragment() {
     private fun presentToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
+    val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                getLastKnownLocation()
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                getLastKnownLocation()
+            }
+            else -> {
+                Toast.makeText(requireContext(), "Location permission not granted", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun requestLocation() {
+        if(checkIfLocationPermissionGranted()) {
+            getLastKnownLocation()
+        } else {
+            requestLocationPermissions()
+        }
+    }
+
+    private fun getLastKnownLocation() {
+        if (checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestLocationPermissions()
+            return
+        }
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                Toast.makeText(requireContext(), "Location: lat:${location?.latitude} lon:${location?.longitude}", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun requestLocationPermissions() {
+        locationPermissionRequest.launch(REQUIRED_PERMISSIONS)
+    }
+
+    private fun checkIfLocationPermissionGranted(): Boolean {
+        val anyPermissionGranted = REQUIRED_PERMISSIONS.any { permission ->
+            checkSelfPermission(requireContext(), permission) == PERMISSION_GRANTED
+        }
+        return anyPermissionGranted
+    }
+
+
 }
