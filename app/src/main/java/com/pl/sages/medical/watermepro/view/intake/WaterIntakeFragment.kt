@@ -282,8 +282,6 @@ class WaterIntakeFragment : Fragment() {
 
     // Jeśli dostaliśmy lokalizację -> dekodujemy adres z nią związany
     private fun handleLocation(location: Location?) {
-        Toast.makeText(requireContext(), "Location: lat:${location?.latitude} lon:${location?.longitude}", Toast.LENGTH_LONG).show()
-
 //        if (location != null) {
 //            decodeAddressFromLocation(location)
 //        }\
