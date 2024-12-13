@@ -36,7 +36,20 @@ class WaterIntakeScreenViewModel: ViewModel() {
     }
 
     private fun updateTargetWaterIntake() {
-        _uiState.value = _uiState.value?.copy(targetWaterIntake = 20)
+        val weatherKind = _uiState.value?.weather?.weatherKind
+        var targetWaterIntake = 10
+
+        when(weatherKind) {
+            WeatherKind.SUNNY -> targetWaterIntake = 20
+            WeatherKind.CLOUDY -> targetWaterIntake = 15
+            WeatherKind.RAINY -> targetWaterIntake = 14
+            WeatherKind.SNOWY -> targetWaterIntake = 13
+            WeatherKind.NONE -> targetWaterIntake = 12
+            WeatherKind.FOGGY -> targetWaterIntake = 11
+            else -> targetWaterIntake = 10
+        }
+
+        _uiState.value = _uiState.value?.copy(targetWaterIntake = targetWaterIntake)
     }
 
     private fun getWaterForToday() {
