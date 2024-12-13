@@ -27,5 +27,5 @@
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.pl.sages.medical.watermepro.view.history.HistoryFragment"
-        android:label="fragment_history" />
+        android:label="Water Intake History" />
 </navigation>

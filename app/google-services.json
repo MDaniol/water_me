@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "202380640231",
+    "project_id": "watermepro-517dd",
+    "storage_bucket": "watermepro-517dd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202380640231:android:5a53646f4be7ab67e58742",
+        "android_client_info": {
+          "package_name": "com.pl.sages.medical.watermepro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtToP2uggcLHdg_3Gbn0nzV24JpRgMcSo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

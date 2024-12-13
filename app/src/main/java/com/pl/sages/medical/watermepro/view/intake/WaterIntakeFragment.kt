@@ -122,6 +122,8 @@ class WaterIntakeFragment : Fragment() {
     private fun buttonTapHandler() {
         viewModel.incrementWaterIntake()
         Log.d(TAG, "Water intake count: ${viewModel.uiState.value?.waterIntakeCount}")
+
+        throw RuntimeException("Test Crash") // Force a crash
     }
 
     fun observeViewModel() {
